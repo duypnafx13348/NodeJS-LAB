@@ -36,12 +36,13 @@ const requestHandler = (req, res) => {
     res.end();
 };
 
-module.exports = requestHandler; // Cách exports 1 hàm trong NodeJS 
+// Cách exports 1 hàm trong NodeJS 
+// module.exports = requestHandler; 
 
 //----------------------------------------------------------
 
 // Cách exports nhiều hàm 1 lúc trong NodeJS :
-// module.exports = {
-//     handler: requestHandler,
-//     someText: 'giá trị này sẽ hiện khi console.log(routes.someText) ở file app.js' 
-// }
+module.exports = {
+    handler: requestHandler,
+    someText: 'giá trị này sẽ hiện khi console.log(routes.someText) ở file app.js' 
+}
