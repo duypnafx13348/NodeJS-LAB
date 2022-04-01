@@ -2,6 +2,7 @@ const express = require('express'); // import express.js được cài đặt t�
 const bodyParser = require('body-parser'); // import body-parser được cái đặt từ npm install để hỗ trợ lấy giá trị của ô <input> trong thẻ <form>
 const adminRoutes = require('./routes/admin'); //import từ file admin trong routes vào
 const shopRoutes = require('./routes/shop');    //import từ file shop trong routes vào
+const path = require('path');
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.use(shopRoutes);    // sử dụng router đã được import vào từ dò
 
 // xử lý lỗi khi nhập địa chỉ (path) khác
 app.use((req, res, next) => {
-    res.status(404).send('<h1>Page not pound</h1>');
+    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));    // sử dụng sendFile(path.join(__dirname, 'views', '404.html')) để lấy file 404.html từ views
 });
 
 app.listen(3000);
