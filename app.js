@@ -10,4 +10,9 @@ app.use(bodyParser.urlencoded({extended: false})); // sử dụng body-parser đ
 app.use(adminRoutes);   // sử dụng router đã được import vào từ dòng 3
 app.use(shopRoutes);    // sử dụng router đã được import vào từ dòng 4
 
+// xử lý lỗi khi nhập địa chỉ (path) khác
+app.use((req, res, next) => {
+    res.status(404).send('<h1>Page not pound</h1>');
+});
+
 app.listen(3000);
