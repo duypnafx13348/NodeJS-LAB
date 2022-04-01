@@ -7,7 +7,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({extended: false})); // sử dụng body-parser đã import vào từ dòng 2
 
-app.use(adminRoutes);   // sử dụng router đã được import vào từ dòng 3
+app.use('/admin',adminRoutes);   // sử dụng router đã được import vào từ dòng 3
 app.use(shopRoutes);    // sử dụng router đã được import vào từ dòng 4
 
 // xử lý lỗi khi nhập địa chỉ (path) khác
