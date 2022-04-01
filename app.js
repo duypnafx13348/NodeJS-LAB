@@ -7,6 +7,7 @@ const path = require('path');
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: false})); // sử dụng body-parser đã import vào từ dòng 2
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin',adminRoutes);   // sử dụng router đã được import vào từ dòng 3
 app.use(shopRoutes);    // sử dụng router đã được import vào từ dòng 4
