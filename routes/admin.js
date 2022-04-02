@@ -8,7 +8,7 @@ const products = []; // tạo 1 cái biến với mảng rỗng để lấy giá
 
 // Middleware với path là localhost3000/admin/add-product vì ở app.js dòng 10 đã thêm path /admin ở đầu
 router.get('/add-product',(req, res, next) => {
-    res.sendFile(path.join(rootDir, 'views', 'add-product.html')) // sử dụng sendFile(path.join(rootDir, 'views', 'add-product.html')) thay cho sendFile(path.join(__dirname, '../', 'views', 'add-product.html')) để lấy file add-product.html từ views
+    res.render('add-product', { pageTitle: 'Add Product'})
 });
 
 // Middleware với path là localhost3000/admin/product vì ở app.js dòng 10 đã thêm path /admin ở đầu

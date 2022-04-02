@@ -17,7 +17,7 @@ app.use(shopRoutes);    // sử dụng router đã được import vào từ dò
 
 // xử lý lỗi khi nhập địa chỉ (path) khác
 app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));    // sử dụng sendFile(path.join(__dirname, 'views', '404.html')) để lấy file 404.html từ views
+    res.status(404).render('404');
 });
 
 app.listen(3000);
