@@ -8,7 +8,13 @@ const products = []; // tạo 1 cái biến với mảng rỗng để lấy giá
 
 // Middleware với path là localhost3000/admin/add-product vì ở app.js dòng 10 đã thêm path /admin ở đầu
 router.get('/add-product',(req, res, next) => {
-    res.render('add-product', { pageTitle: 'Add Product', path: '/admin/add-product' });
+    res.render('add-product', { 
+        pageTitle: 'Add Product', 
+        path: '/admin/add-product',
+        activeAddProduct: true,
+        productCSS: true,
+        formsCSS: true
+    });
 });
 
 // Middleware với path là localhost3000/admin/product vì ở app.js dòng 10 đã thêm path /admin ở đầu

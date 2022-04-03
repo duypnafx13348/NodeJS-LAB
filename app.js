@@ -7,7 +7,7 @@ const expressHbs = require('express-handlebars'); // import express-handlebars d
 
 const app = express();
 
-app.engine('hbs', expressHbs());    // su dung handlebars da import vao tu dong 6
+app.engine('hbs', expressHbs({layoutsDir: 'views/layouts', defaultLayout: 'main-layout', extname: 'hbs'}));    // su dung handlebars da import vao tu dong 6
 app.set('view engine', 'hbs');
 app.set('views', 'views');
 
