@@ -1,20 +1,9 @@
 const express = require('express'); 
-const adminData = require('./admin');
-
+const productsController = require('../controllers/products');  // import file products từ controllers
+const path = require('path');
 const router = express.Router();
 
 //Middleware với path là localhost3000
-router.get('/',(req, res, next) => {
-    const products = adminData.products;
-    console.log(products);
-    res.render('shop', { 
-        prods: products, 
-        pageTitle: 'Shop', 
-        path: '/', 
-        hasProducts: products.length > 0,
-        activeShop: true,
-        productCSS: true
-    });
-});
+router.get('/', productsController.getProducts);
 
 module.exports = router;

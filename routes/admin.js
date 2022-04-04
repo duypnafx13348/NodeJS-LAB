@@ -1,27 +1,10 @@
-const express = require('express');
+const express = require('express');     // import express đã cài đặt npm vào
+const productsController = require('../controllers/products');  // import file products từ controllers
 const path = require('path');
-
-const rootDir = require('../helpers/path'); // import path.js từ helpers để sử lý render giao diện cho người dùng dưới dòng số 9
-
 const router = express.Router();
-const products = []; // tạo 1 cái biến với mảng rỗng để lấy giá trị của ô input bỏ vào
 
-// Middleware với path là localhost3000/admin/add-product vì ở app.js dòng 10 đã thêm path /admin ở đầu
-router.get('/add-product',(req, res, next) => {
-    res.render('add-product', { 
-        pageTitle: 'Add Product', 
-        path: '/admin/add-product',
-        activeAddProduct: true,
-        productCSS: true,
-        formsCSS: true
-    });
-});
+router.get('/add-product', productsController.getAddProduct);
 
-// Middleware với path là localhost3000/admin/product vì ở app.js dòng 10 đã thêm path /admin ở đầu
-router.post('/add-product',(req, res, next) => {
-    products.push({title: req.body.title});
-    res.redirect('/');
-});
+router.post('/add-product', productsController.postAddProduct);
 
-exports.routes = router;
-exports.products = products;
+module.exports = router;
