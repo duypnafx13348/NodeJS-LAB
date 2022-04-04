@@ -7,8 +7,8 @@ const expressHbs = require('express-handlebars'); // import express-handlebars d
 
 const app = express();
 
-app.engine('hbs', expressHbs({layoutsDir: 'views/layouts', defaultLayout: 'main-layout', extname: 'hbs'}));    // su dung handlebars da import vao tu dong 6
-app.set('view engine', 'hbs');
+// app.engine('hbs', expressHbs({layoutsDir: 'views/layouts', defaultLayout: 'main-layout', extname: 'hbs'}));    // su dung handlebars da import vao tu dong 6
+app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({extended: false})); // sử dụng body-parser đã import vào từ dòng 2
