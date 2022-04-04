@@ -4,6 +4,7 @@ const adminRoutes = require('./routes/admin'); //import từ file admin trong ro
 const shopRoutes = require('./routes/shop');    //import từ file shop trong routes vào
 const path = require('path');
 const expressHbs = require('express-handlebars'); // import express-handlebars da cai dat vao
+const errorController = require('./controllers/error');     //import file error từ controllers vào để sử dụng dưới dòng 22
 
 const app = express();
 
@@ -18,8 +19,6 @@ app.use('/admin',adminRoutes);   // sử dụng router đã được import vào
 app.use(shopRoutes);    // sử dụng router đã được import vào từ dòng 4
 
 // xử lý lỗi khi nhập địa chỉ (path) khác
-app.use((req, res, next) => {
-    res.status(404).render('404', { pageTitle: 'Page Not Found', path: '' });
-});
+app.use(errorController.get404);
 
 app.listen(3000);
