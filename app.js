@@ -19,7 +19,7 @@ app.use(shopRoutes);    // sử dụng router đã được import vào từ dò
 
 // xử lý lỗi khi nhập địa chỉ (path) khác
 app.use((req, res, next) => {
-    res.status(404).render('404', { pageTitle: 'Page Not Found' });
+    res.status(404).render('404', { pageTitle: 'Page Not Found', path: '' });
 });
 
 app.listen(3000);
