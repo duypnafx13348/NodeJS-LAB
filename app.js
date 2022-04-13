@@ -7,7 +7,7 @@ const expressHbs = require('express-handlebars'); // import express-handlebars d
 const errorController = require('./controllers/error');     //import file error từ controllers vào để sử dụng dưới dòng 22
 const db = require('./util/database');
 
-db.execute('SELECT * FROM products');
+db.execute('SELECT * FROM products').then().catch();
 
 const app = express();
 
