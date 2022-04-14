@@ -6,6 +6,7 @@ const path = require('path');
 const expressHbs = require('express-handlebars'); // import express-handlebars da cai dat vao
 const errorController = require('./controllers/error');     //import file error từ controllers vào để sử dụng dưới dòng 22
 
+const sequelize = require('./util/database');
 const app = express();
 
 // app.engine('hbs', expressHbs({layoutsDir: 'views/layouts', defaultLayout: 'main-layout', extname: 'hbs'}));    // su dung handlebars da import vao tu dong 6
@@ -21,4 +22,12 @@ app.use(shopRoutes);    // sử dụng router đã được import vào từ dò
 // xử lý lỗi khi nhập địa chỉ (path) khác
 app.use(errorController.get404);
 
-app.listen(3000);
+sequelize
+    .sync()
+    .then(result => {
+        // console.log(result);
+        app.listen(3000);
+    })
+    .catch(err => {
+        console.log(err)
+    });
