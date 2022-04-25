@@ -1,33 +1,55 @@
-const express = require('express'); // import express.js được cài đặt từ npm install để hỗ trợ code nhanh hơn
-const bodyParser = require('body-parser'); // import body-parser được cái đặt từ npm install để hỗ trợ lấy giá trị của ô <input> trong thẻ <form>
-const adminRoutes = require('./routes/admin'); //import từ file admin trong routes vào
-const shopRoutes = require('./routes/shop');    //import từ file shop trong routes vào
-const path = require('path');
-const expressHbs = require('express-handlebars'); // import express-handlebars da cai dat vao
-const errorController = require('./controllers/error');     //import file error từ controllers vào để sử dụng dưới dòng 22
+const express = require("express");
+const bodyParser = require("body-parser");
+const adminRoutes = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
+const path = require("path");
+const errorController = require("./controllers/error");
 
-const sequelize = require('./util/database');
+const sequelize = require("./util/database");
+const Product = require("./models/product");
+const User = require("./models/user");
+
 const app = express();
 
-// app.engine('hbs', expressHbs({layoutsDir: 'views/layouts', defaultLayout: 'main-layout', extname: 'hbs'}));    // su dung handlebars da import vao tu dong 6
-app.set('view engine', 'ejs');
-app.set('views', 'views');
+app.set("view engine", "ejs");
+app.set("views", "views");
 
-app.use(bodyParser.urlencoded({extended: false})); // sử dụng body-parser đã import vào từ dòng 2
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.use('/admin',adminRoutes);   // sử dụng router đã được import vào từ dòng 3
-app.use(shopRoutes);    // sử dụng router đã được import vào từ dòng 4
+app.use((req, res, next) => {
+  User.findByPk(1)
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch((err) => console.log(err));
+});
 
-// xử lý lỗi khi nhập địa chỉ (path) khác
+app.use("/admin", adminRoutes);
+app.use(shopRoutes);
+
 app.use(errorController.get404);
 
+Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
+User.hasMany(Product);
+
 sequelize
-    .sync()
-    .then(result => {
-        // console.log(result);
-        app.listen(3000);
-    })
-    .catch(err => {
-        console.log(err)
-    });
+  //   .sync({ force: true })
+  .sync()
+  .then((result) => {
+    return User.findByPk(1);
+  })
+  .then((user) => {
+    if (!user) {
+      return User.create({ name: "Max", email: "test@est.com" });
+    }
+    return user;
+  })
+  .then((user) => {
+    // console.log(user);
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
