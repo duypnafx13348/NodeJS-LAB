@@ -4,8 +4,8 @@ const getDb = require("../util/database").getDb;
 const ObjectId = mongodb.ObjectId;
 
 class User {
-  constructor(name, email, cart, id) {
-    this.name = name;
+  constructor(username, email, cart, id) {
+    this.name = username;
     this.email = email;
     this.cart = cart; // {item: []}
     this._id = id;
@@ -17,8 +17,8 @@ class User {
   }
 
   addToCart(product) {
-    const cartProductIndex = this.cart.item.findIndex((cb) => {
-      return cb.productId.toString() === product._id.toString();
+    const cartProductIndex = this.cart.items.findIndex((cp) => {
+      return cp.productId.toString() === product._id.toString();
     });
     let newQuantity = 1;
     const updatedCartItems = [...this.cart.items];
@@ -59,13 +59,26 @@ class User {
             ...p,
             quantity: this.cart.items.find((i) => {
               return i.productId.toString() === p._id.toString();
-            }),
+            }).quantity,
           };
         });
       })
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  deleteItemFromCart(productId) {
+    const updatedCartItems = this.cart.items.filter((item) => {
+      return item.productId.toString() !== productId.toString();
+    });
+    const db = getDb();
+    return db
+      .collection("users")
+      .updateOne(
+        { _id: new ObjectId(this._id) },
+        { $set: { cart: { items: updatedCartItems } } }
+      );
   }
 
   static findById(userId) {
