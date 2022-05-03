@@ -4,11 +4,11 @@ const path = require("path");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
+const authRouters = require("./routes/auth");
 const errorController = require("./controllers/error");
 
 const mongoose = require("mongoose");
 const User = require("./models/user");
-const { getMaxListeners } = require("process");
 
 const app = express();
 
@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
-
+app.use(authRouters);
 app.use(errorController.get404);
 
 mongoose

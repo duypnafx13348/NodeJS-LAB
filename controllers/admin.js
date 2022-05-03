@@ -5,6 +5,7 @@ exports.getAddProduct = (req, res, next) => {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
+    isAuthenticated: req.isLoggedIn,
   });
 };
 
@@ -47,6 +48,7 @@ exports.getEditProduct = (req, res, next) => {
         path: "/admin/edit-product",
         editing: editMode,
         product: product,
+        isAuthenticated: req.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -76,14 +78,13 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.find()
-    // .select("title price -_id") // .select để chọn những thứ muốn hiển thị. Ở đây title và price là 2 thứ muốn hiển thị ra UI, còn description, imageUrl và _id sẽ không có trong UI cũng như trong console
-    // .populate("userId", "name") // .populate để hiển thị đầy đủ về userId: có name và email luôn/còn nếu thêm đối số thứ 2 là "name" vào thì nó chỉ hiện name trong userId, không hiện email
     .then((products) => {
       console.log(products);
       res.render("admin/products", {
         prods: products,
         pageTitle: "Admin Products",
         path: "/admin/products",
+        isAuthenticated: req.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
