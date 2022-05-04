@@ -8,15 +8,16 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 
 const User = require("./models/user");
 
-const MONGODB_URI =
-  "mongodb+srv://duypnafx13348:poeietiiup1@cluster0.ye7x7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRouters = require("./routes/auth");
 const errorController = require("./controllers/error");
 
 const app = express();
+
+const MONGODB_URI =
+  "mongodb+srv://duypnafx13348:poeietiiup1@cluster0.ye7x7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: "sessions",
@@ -35,6 +36,20 @@ app.use(
     store: store,
   })
 );
+
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById("626a667513c1b912e6192fed")
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
