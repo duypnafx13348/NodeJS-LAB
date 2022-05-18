@@ -27,12 +27,21 @@ const store = new MongoDBStore({
 });
 
 const csrfProtection = csrf({});
+// const fileStorage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "images");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, new Date().toISOString() + "-" + file.originalname);
+//   },
+// });
 
 app.set("view engine", "ejs");
 app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ dest: "images" }).single("image")); // dest: "images" là để tạo ra 1 folder mới tên images còn .single("image") là đang trỏ đến <input type="file" /> của views/admin/edit-product.ejs
+app.use(multer({ dest: "images" }).single("image")); // storage: fileStorage là để tạo ra 1 folder mới tên images còn .single("image") là đang trỏ đến <input type="file" /> của views/admin/edit-product.ejs
+// app.use(multer({ storage: fileStorage }).single("image"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
@@ -45,12 +54,6 @@ app.use(
 
 app.use(csrfProtection);
 app.use(flash());
-
-app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.session.isLoggedIn;
-  res.locals.csrfToken = req.csrfToken();
-  next();
-});
 
 app.use((req, res, next) => {
   if (!req.session.user) {
@@ -69,6 +72,12 @@ app.use((req, res, next) => {
     });
 });
 
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(authRouters);
@@ -77,6 +86,7 @@ app.get("/500", errorController.get500);
 app.use(errorController.get404);
 
 app.use((error, req, res, next) => {
+  console.log(req.session.isLoggedIn);
   // res.redirect("/500");
   res.status(500).render("500", {
     pageTitle: "Error!",
